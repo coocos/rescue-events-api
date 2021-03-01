@@ -4,7 +4,7 @@ const events = [
   {
     type: "rakennuspalo: keskisuuri",
     location: "Tuusula",
-    timestamp: "2020-02-05T07:00:00",
+    time: new Date(2021, 1, 1),
   },
 ];
 
