@@ -1,12 +1,6 @@
 import { RescueEvent } from "../types";
 
-const events = [
-  {
-    type: "rakennuspalo: keskisuuri",
-    location: "Tuusula",
-    time: new Date(2021, 1, 1),
-  },
-];
+const events: RescueEvent[] = [];
 
 export async function findAll(): Promise<RescueEvent[]> {
   return [...events];
