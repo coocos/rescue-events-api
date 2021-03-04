@@ -1,11 +1,15 @@
 import { RescueEvent } from "../types";
 
-const events: RescueEvent[] = [];
+const events: {
+  [hash: string]: RescueEvent;
+} = {};
 
 export async function findAll(): Promise<RescueEvent[]> {
-  return [...events];
+  return Object.values(events);
 }
 
 export async function add(event: RescueEvent): Promise<void> {
-  events.push({ ...event });
+  if (!(event.hash in events)) {
+    events[event.hash] = { ...event };
+  }
 }

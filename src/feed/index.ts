@@ -1,5 +1,6 @@
 import axios from "axios";
 import iconv from "iconv-lite";
+import hash from "object-hash";
 import Parser from "rss-parser";
 import { RescueEvent } from "../types";
 
@@ -24,10 +25,14 @@ export async function mapFeedToEvents(rawFeed: string): Promise<RescueEvent[]> {
     }
     const [location, type] = item.title?.split(",");
     const finnishLocation = location.split("/")[0].trim();
-    return {
+    const event = {
       location: finnishLocation.trim(),
       type: type.trim(),
       time: new Date(item.isoDate ?? new Date()),
+    };
+    return {
+      ...event,
+      hash: hash(event),
     };
   });
 }
