@@ -3,7 +3,6 @@ import cron from "node-cron";
 import config from "./config";
 import logger from "./logger";
 
-import * as loaders from "./loaders";
 import * as eventRepo from "./repos/eventRepo";
 import * as feed from "./feed";
 
@@ -15,8 +14,6 @@ cron.schedule("* * * * *", async () => {
     eventRepo.add(event);
   }
 });
-
-loaders.loadExpress(app);
 
 app.listen(config.port, () => {
   logger.info(`Running in ${config.env} mode`);
