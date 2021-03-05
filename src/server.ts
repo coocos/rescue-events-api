@@ -18,8 +18,7 @@ cron.schedule("* * * * *", async () => {
 
 loaders.loadExpress(app);
 
-const port = process.env.PORT ?? 8000;
-app.listen(port, () => {
+app.listen(config.port, () => {
   logger.info(`Running in ${config.env} mode`);
-  logger.warn(`Listening at http://localhost:${port}`);
+  logger.info(`Listening at http://localhost:${config.port}`);
 });
