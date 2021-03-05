@@ -1,5 +1,6 @@
 import app from "./app";
 import cron from "node-cron";
+import config from "./config";
 
 import * as eventRepo from "./repos/eventRepo";
 import * as feed from "./feed";
@@ -15,5 +16,6 @@ cron.schedule("* * * * *", async () => {
 
 const port = process.env.PORT ?? 8000;
 app.listen(port, () => {
+  console.log(`Running in ${config.env} mode`);
   console.log(`Listening at http://localhost:${port}`);
 });
