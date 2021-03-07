@@ -1,4 +1,4 @@
-import { mapFeedToEvents } from "./index";
+import feedService from "./feedService";
 
 describe("Feed parser", () => {
   it("maps feed items to event objects", async () => {
@@ -24,7 +24,7 @@ describe("Feed parser", () => {
         </channel>
       </rss>
     `;
-    const events = await mapFeedToEvents(rawFeed);
+    const events = await feedService.mapFeedToEvents(rawFeed);
     expect(events).toEqual([
       {
         type: "rakennuspalo: pieni",

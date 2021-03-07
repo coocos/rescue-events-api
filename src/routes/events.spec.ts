@@ -1,10 +1,10 @@
-import app from "../app";
-import * as eventRepo from "../repos/eventRepo";
 import request from "supertest";
+import app from "../app";
+import eventService from "../services/eventService";
 
 describe("/events", () => {
   it("returns list of events", async () => {
-    eventRepo.add({
+    eventService.add({
       type: "rakennuspalo: keskisuuri",
       location: "Tuusula",
       time: new Date("2021-01-31T22:00:00.000Z"),
