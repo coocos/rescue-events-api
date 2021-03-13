@@ -1,17 +1,23 @@
+import EventEmitter from "events";
 import cron from "node-cron";
 import logger from "./logger";
 
 import { eventService, feedService } from "./services";
 
-const pollFeed = (): void => {
+// TODO: Figure out a good way to test this
+const feedScraper = (): EventEmitter => {
+  const feedEventEmitter = new EventEmitter();
   cron.schedule("* * * * *", async () => {
-    logger.info("Checking feed for new events...");
     const rawFeed = await feedService.decodeFeed();
     const events = await feedService.mapFeedToEvents(rawFeed);
     for (const event of events) {
-      eventService.add(event);
+      if (eventService.add(event)) {
+        logger.info("New event: %s", event);
+        feedEventEmitter.emit("rescueEvent", event);
+      }
     }
   });
+  return feedEventEmitter;
 };
 
-export default pollFeed;
+export default feedScraper;

@@ -5,13 +5,15 @@ const events: {
 } = {};
 
 const eventService = {
-  async findAll(): Promise<RescueEvent[]> {
+  findAll(): RescueEvent[] {
     return Object.values(events);
   },
-  async add(event: RescueEvent): Promise<void> {
-    if (!(event.hash in events)) {
-      events[event.hash] = { ...event };
+  add(event: RescueEvent): boolean {
+    if (event.hash in events) {
+      return false;
     }
+    events[event.hash] = { ...event };
+    return true;
   },
 };
 
