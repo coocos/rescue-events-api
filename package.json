@@ -4,13 +4,14 @@
   "description": "Rescue service API",
   "main": "src/app.ts",
   "scripts": {
-    "start": "npx ts-node-dev --respawn --transpile-only src/server.ts",
+    "start": "npx ts-node-dev --respawn --transpile-only --require dotenv/config src/server.ts",
     "test": "npx jest"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
     "axios": "^0.21.1",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-winston": "^4.1.0",
     "iconv-lite": "^0.6.2",
