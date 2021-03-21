@@ -11,7 +11,7 @@ const feedScraper = (): EventEmitter => {
     const rawFeed = await feedService.decodeFeed();
     const events = await feedService.mapFeedToEvents(rawFeed);
     for (const event of events) {
-      if (eventService.add(event)) {
+      if (await eventService.add(event)) {
         logger.info("New event: %s", event);
         feedEventEmitter.emit("rescueEvent", event);
       }
