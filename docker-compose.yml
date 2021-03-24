@@ -1,11 +1,20 @@
 version: '3'
 services:
+  api:
+    build:
+      context: ./
+    restart: always
+    environment:
+      - DB_HOST=database
+      - DB_USER
+      - DB_PASSWORD
+      - DB_NAME
+    ports:
+      - 8000:8000
   database:
     image: postgres:13.2-alpine
     restart: always
     environment:
-      POSTGRES_USER
-      POSTGRES_PASSWORD
-      POSTGRES_DB
-    ports:
-        - 127.0.0.1:5432:5432
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
