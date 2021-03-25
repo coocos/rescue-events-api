@@ -6,7 +6,8 @@ import { RescueEvent } from "../types";
 
 type EventService = {
   findAll(): Promise<RescueEvent[]>;
-  add(event: RescueEvent): Promise<boolean>;
+  exists(event: RescueEvent): Promise<boolean>;
+  add(event: RescueEvent): Promise<void>;
 };
 
 const inMemoryEventService: EventService = (() => {
@@ -17,17 +18,35 @@ const inMemoryEventService: EventService = (() => {
     async findAll(): Promise<RescueEvent[]> {
       return Object.values(events);
     },
-    async add(event: RescueEvent): Promise<boolean> {
+    async exists(event: RescueEvent): Promise<boolean> {
       if (event.hash in events) {
-        return false;
+        return true;
       }
+      return false;
+    },
+    async add(event: RescueEvent): Promise<void> {
       events[event.hash] = { ...event };
-      return true;
     },
   };
 })();
 
 const sqlEventService: EventService = (() => {
+  type Location = {
+    id: number;
+    name: string;
+  };
+  type Type = {
+    id: number;
+    name: string;
+  };
+  type Event = {
+    id: number;
+    location_id: number;
+    type_id: number;
+    time: Date;
+    hash: string;
+  };
+
   const db = knex({
     client: "postgres",
     connection: {
@@ -37,12 +56,13 @@ const sqlEventService: EventService = (() => {
       database: config.database.name,
     },
   });
+
   return {
     async findAll(): Promise<RescueEvent[]> {
       const events = await db("events")
         .join("types", "types.id", "events.type_id")
         .join("locations", "locations.id", "events.location_id")
-        .select(
+        .select<RescueEvent[]>(
           "events.time",
           "events.hash",
           "locations.name as location",
@@ -50,39 +70,50 @@ const sqlEventService: EventService = (() => {
         );
       return events;
     },
-    async add(event: RescueEvent): Promise<boolean> {
+    async exists(event: RescueEvent): Promise<boolean> {
+      const knownEvent = await db<Event>("events")
+        .select("*")
+        .where({ hash: event.hash })
+        .first();
+      return knownEvent !== undefined;
+    },
+    async add(event: RescueEvent): Promise<void> {
       try {
         return await db.transaction(async (trx) => {
-          const knownEvent = await trx("events")
-            .select("id")
+          const knownEvent = await trx<Event>("events")
+            .select("*")
             .where({
               hash: event.hash,
             })
             .first();
           if (knownEvent !== undefined) {
-            return false;
+            return;
           }
-          let location = await trx("locations")
-            .select("id")
+          let location = await trx<Location>("locations")
+            .select("*")
             .where({
               name: event.location,
             })
             .first();
           if (location === undefined) {
-            location = await trx("locations").returning("id").insert({
-              name: event.location,
-            });
+            [location] = await trx("locations")
+              .insert({
+                name: event.location,
+              })
+              .returning<Location[]>("*");
           }
-          let type = await trx("types")
-            .select("id")
+          let type = await trx<Type>("types")
+            .select("*")
             .where({
               name: event.type,
             })
             .first();
           if (type === undefined) {
-            type = await trx("types").returning("id").insert({
-              name: event.type,
-            });
+            [type] = await trx("types")
+              .insert({
+                name: event.type,
+              })
+              .returning<Type[]>("*");
           }
           await trx("events").insert({
             type_id: type.id,
@@ -90,11 +121,9 @@ const sqlEventService: EventService = (() => {
             time: event.time,
             hash: event.hash,
           });
-          return true;
         });
       } catch (error) {
         logger.error(error);
-        return false;
       }
     },
   };
