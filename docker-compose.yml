@@ -9,8 +9,11 @@ services:
       - DB_USER
       - DB_PASSWORD
       - DB_NAME
+      - FEED_SCHEDULE
     ports:
       - 8000:8000
+    depends_on:
+      - database
   database:
     image: postgres:13.2-alpine
     restart: always
