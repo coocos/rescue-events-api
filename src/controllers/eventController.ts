@@ -13,7 +13,7 @@ export async function listEvents(req: Request, res: Response): Promise<void> {
       }))
     );
   } catch (e) {
-    logger.error("Failed to list events: ", e);
+    logger.error(`Failed to list events: ${e}`);
     res.status(500).json({
       error: "failed to list events",
     });

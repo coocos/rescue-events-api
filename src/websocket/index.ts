@@ -24,7 +24,7 @@ function createWebSocketServer(httpServer: http.Server): ws.Server {
 export default function webSocketServer(httpServer: http.Server): Broadcast {
   const webSocketServer = createWebSocketServer(httpServer);
   webSocketServer.on("connection", () => {
-    logger.info("%d clients connected", webSocketServer.clients.size);
+    logger.info(`${webSocketServer.clients.size} clients connected`);
   });
 
   return (event) => {

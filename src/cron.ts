@@ -15,7 +15,7 @@ const feedScraper = (): EventEmitter => {
       if (!(await eventService.exists(event))) {
         await eventService.add(event);
         feedEventEmitter.emit("rescueEvent", event);
-        logger.info("New event: %s", event);
+        logger.info("New event", event);
       }
     }
   });
