@@ -5,7 +5,7 @@
   "main": "src/app.ts",
   "scripts": {
     "start": "ts-node-dev --respawn --transpile-only --require dotenv/config src/server.ts",
-    "test": "jest",
+    "test": "NODE_ENV=test jest --silent",
     "migrate": "env $(cat .env) knex migrate:latest",
     "rollback": "env $(cat .env) knex migrate:rollback"
   },

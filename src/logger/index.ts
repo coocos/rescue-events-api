@@ -1,3 +1,4 @@
+import config from "../config";
 import winston from "winston";
 
 export default winston.createLogger({
@@ -5,5 +6,9 @@ export default winston.createLogger({
     winston.format.timestamp(),
     winston.format.json()
   ),
-  transports: [new winston.transports.Console()],
+  transports: [
+    new winston.transports.Console({
+      silent: config.env == "test",
+    }),
+  ],
 });
