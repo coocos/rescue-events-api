@@ -1,10 +1,19 @@
 import request from "supertest";
 import app from "../app";
-import eventService from "../services/eventService";
+import { inMemoryEventService } from "../services/inMemoryEventService";
+
+jest.mock("../services/sqlEventService", () => {
+  const { inMemoryEventService } = jest.requireActual(
+    "../services/inMemoryEventService"
+  );
+  return {
+    sqlEventService: inMemoryEventService,
+  };
+});
 
 describe("/events", () => {
   it("returns list of events", async () => {
-    eventService.add({
+    inMemoryEventService.add({
       type: "rakennuspalo: keskisuuri",
       location: "Tuusula",
       time: new Date("2021-01-31T22:00:00.000Z"),

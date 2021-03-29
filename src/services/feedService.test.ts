@@ -1,4 +1,4 @@
-import feedService from "./feedService";
+import { feedService } from "./feedService";
 
 describe("Feed parser", () => {
   it("maps feed items to event objects", async () => {

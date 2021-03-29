@@ -4,33 +4,13 @@ import logger from "../logger";
 
 import { RescueEvent } from "../types";
 
-type EventService = {
+export type EventService = {
   findAll(): Promise<RescueEvent[]>;
   exists(event: RescueEvent): Promise<boolean>;
   add(event: RescueEvent): Promise<void>;
 };
 
-const inMemoryEventService: EventService = (() => {
-  const events: {
-    [hash: string]: RescueEvent;
-  } = {};
-  return {
-    async findAll(): Promise<RescueEvent[]> {
-      return Object.values(events);
-    },
-    async exists(event: RescueEvent): Promise<boolean> {
-      if (event.hash in events) {
-        return true;
-      }
-      return false;
-    },
-    async add(event: RescueEvent): Promise<void> {
-      events[event.hash] = { ...event };
-    },
-  };
-})();
-
-const sqlEventService: EventService = (() => {
+export const sqlEventService: EventService = (() => {
   type Location = {
     id: number;
     name: string;
@@ -128,5 +108,3 @@ const sqlEventService: EventService = (() => {
     },
   };
 })();
-
-export default sqlEventService;

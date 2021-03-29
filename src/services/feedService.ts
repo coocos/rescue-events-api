@@ -4,7 +4,7 @@ import hash from "object-hash";
 import Parser from "rss-parser";
 import { RescueEvent } from "../types";
 
-const feedService = {
+export const feedService = {
   async decodeFeed(): Promise<string> {
     const response = await axios.get<ArrayBuffer>(
       "http://www.peto-media.fi/tiedotteet/rss.xml",
@@ -37,5 +37,3 @@ const feedService = {
     });
   },
 };
-
-export default feedService;

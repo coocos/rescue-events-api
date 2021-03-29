@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import logger from "../logger";
-import { eventService } from "../services";
+import { sqlEventService } from "../services";
 
 export async function listEvents(req: Request, res: Response): Promise<void> {
   try {
-    const events = await eventService.findAll();
+    const events = await sqlEventService.findAll();
     res.json(
       events.map(({ type, location, time }) => ({
         type,

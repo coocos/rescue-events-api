@@ -1,4 +1,4 @@
-import eventService from "./eventService";
-import feedService from "./feedService";
+import { sqlEventService } from "./sqlEventService";
+import { feedService } from "./feedService";
 
-export { eventService, feedService };
+export { sqlEventService, feedService };

@@ -1,4 +1,4 @@
-import eventService from "./eventService";
+import { inMemoryEventService as eventService } from "./inMemoryEventService";
 
 describe("EventRepo", () => {
   it("adds event to repository", async () => {
