@@ -2,7 +2,7 @@ export default {
   env: process.env.NODE_ENV ?? "production",
   port: parseInt(process.env.APP_PORT ?? "8000"),
   feed: {
-    schedule: process.env.FEED_SCHEDULE ?? "*/2 * * * *",
+    schedule: parseInt(process.env.FEED_SCHEDULE ?? "2"),
   },
   database: {
     host: process.env.DB_HOST,

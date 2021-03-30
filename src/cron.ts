@@ -5,10 +5,10 @@ import config from "./config";
 
 import { eventService, feedService } from "./services";
 
-// TODO: Figure out a good way to test this
 const feedScraper = (): EventEmitter => {
   const feedEventEmitter = new EventEmitter();
-  cron.schedule(config.feed.schedule, async () => {
+  cron.schedule(`*/${config.feed.schedule} * * * *`, async () => {
+    logger.info("Running cron");
     const rawFeed = await feedService.decodeFeed();
     const events = await feedService.mapFeedToEvents(rawFeed);
     for (const event of events) {
