@@ -1,7 +1,7 @@
 import http from "http";
 import WebSocket, { AddressInfo } from "ws";
 
-import webSocketServer from ".";
+import webSocketServer from "./server";
 
 describe("WebSocket server", () => {
   let server: http.Server;
