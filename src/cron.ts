@@ -8,7 +8,6 @@ import { sqlEventService, feedService } from "./services";
 const feedScraper = (): EventEmitter => {
   const feedEventEmitter = new EventEmitter();
   cron.schedule(`*/${config.feed.schedule} * * * *`, async () => {
-    logger.info("Running cron");
     const rawFeed = await feedService.decodeFeed();
     const events = await feedService.mapFeedToEvents(rawFeed);
     for (const event of events) {
