@@ -10,7 +10,7 @@ export default {
     password: config.database.password,
   },
   migrations: {
-    directory: path.join("db", "migrations"),
+    directory: path.join("src", "db", "migrations"),
     tableName: "migrations",
   },
 };
