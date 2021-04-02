@@ -2,16 +2,15 @@ import axios from "axios";
 import iconv from "iconv-lite";
 import hash from "object-hash";
 import Parser from "rss-parser";
+
+import config from "../config";
 import { RescueEvent } from "../types";
 
 export const feedService = {
   async decodeFeed(): Promise<string> {
-    const response = await axios.get<ArrayBuffer>(
-      "http://www.peto-media.fi/tiedotteet/rss.xml",
-      {
-        responseType: "arraybuffer",
-      }
-    );
+    const response = await axios.get<ArrayBuffer>(config.feed.url, {
+      responseType: "arraybuffer",
+    });
     return iconv.decode(Buffer.from(response.data), "iso-8859-1");
   },
   async mapFeedToEvents(rawFeed: string): Promise<RescueEvent[]> {

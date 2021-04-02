@@ -2,6 +2,7 @@ export default {
   env: process.env.NODE_ENV ?? "production",
   port: parseInt(process.env.APP_PORT ?? "8000"),
   feed: {
+    url: process.env.FEED_URL ?? "http://www.peto-media.fi/tiedotteet/rss.xml",
     schedule: parseInt(process.env.FEED_SCHEDULE ?? "2"),
   },
   database: {
