@@ -1,5 +1,4 @@
-import knex from "knex";
-import config from "../config";
+import db from "../db";
 import logger from "../logger";
 
 import { RescueEvent } from "../types";
@@ -26,16 +25,6 @@ export const sqlEventService: EventService = (() => {
     time: Date;
     hash: string;
   };
-
-  const db = knex({
-    client: "postgres",
-    connection: {
-      host: config.database.host,
-      user: config.database.user,
-      password: config.database.password,
-      database: config.database.name,
-    },
-  });
 
   return {
     async findAll(): Promise<RescueEvent[]> {
