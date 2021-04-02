@@ -14,5 +14,5 @@ COPY --chown=node:node src/ src/
 COPY --chown=node:node db/migrations db/migrations
 
 EXPOSE 8000
-CMD ["node_modules/.bin/ts-node", "--transpile-only", "src/server.ts"]
+CMD ["node_modules/.bin/ts-node", "--transpile-only", "src/index.ts"]
 
