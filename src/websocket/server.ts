@@ -1,9 +1,8 @@
 import logger from "../logger";
 import ws from "ws";
 import http from "http";
-import { RescueEvent } from "../types";
 
-type Broadcast = (event: RescueEvent) => void;
+type Broadcast = (data: unknown) => void;
 
 function createWebSocketServer(httpServer: http.Server): ws.Server {
   const webSocketServer = new ws.Server({
@@ -27,11 +26,11 @@ export default function webSocketServer(httpServer: http.Server): Broadcast {
     logger.info(`${webSocketServer.clients.size} clients connected`);
   });
 
-  return (event) => {
+  return (data) => {
     for (const client of Array.from(webSocketServer.clients)) {
       // FIXME: This might fail if the client has already disconnected
       if (client.readyState === ws.OPEN) {
-        client.send(JSON.stringify(event));
+        client.send(JSON.stringify(data));
       }
     }
   };

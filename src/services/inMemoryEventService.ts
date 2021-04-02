@@ -1,5 +1,4 @@
-import { RescueEvent } from "../types";
-import { EventService } from "./sqlEventService";
+import { RescueEvent, EventService } from "./eventService";
 
 export const inMemoryEventService: EventService = (() => {
   const events: {

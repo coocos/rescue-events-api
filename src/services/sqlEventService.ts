@@ -1,13 +1,7 @@
 import db from "../db";
 import logger from "../logger";
 
-import { RescueEvent } from "../types";
-
-export type EventService = {
-  findAll(): Promise<RescueEvent[]>;
-  exists(event: RescueEvent): Promise<boolean>;
-  add(event: RescueEvent): Promise<void>;
-};
+import { RescueEvent, EventService } from "./eventService";
 
 export const sqlEventService: EventService = (() => {
   type Location = {
