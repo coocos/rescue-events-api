@@ -3,7 +3,7 @@ import http from "http";
 import app from "./app";
 import config from "./config";
 import logger from "./logger";
-import listenToFeed from "./cron";
+import { pollFeed } from "./poll";
 import webSocketServer from "./websocket";
 
 export function startServer(): http.Server {
@@ -17,10 +17,9 @@ export function startServer(): http.Server {
 
   const broadcast = webSocketServer(httpServer);
 
-  const feed = listenToFeed();
-  feed.on("rescueEvent", broadcast);
+  const feedPoller = pollFeed(broadcast);
   httpServer.on("close", () => {
-    feed.close();
+    feedPoller.destroy();
   });
 
   return httpServer;
