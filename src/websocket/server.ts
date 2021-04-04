@@ -17,6 +17,9 @@ function createWebSocketServer(httpServer: http.Server): ws.Server {
       socket.destroy();
     }
   });
+  httpServer.on("close", () => {
+    webSocketServer.close();
+  });
   return webSocketServer;
 }
 
