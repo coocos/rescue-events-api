@@ -4,8 +4,9 @@
   "description": "Rescue service API",
   "main": "src/app.ts",
   "scripts": {
-    "test": "NODE_ENV=test jest --silent",
     "start": "ts-node-dev --respawn --transpile-only --require dotenv/config src/index.ts",
+    "test": "NODE_ENV=test jest --silent src/",
+    "e2e": "env $(cat .env) NODE_ENV=test jest --silent e2e/",
     "migrate": "env $(cat .env) knex migrate:latest",
     "rollback": "env $(cat .env) knex migrate:rollback"
   },
