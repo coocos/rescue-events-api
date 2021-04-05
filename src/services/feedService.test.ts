@@ -1,8 +1,10 @@
-import { feedService } from "./feedService";
+import axios from "axios";
+import { fetchFeedEvents } from "./feedService";
 
-describe("Feed parser", () => {
-  it("maps feed items to event objects", async () => {
-    const rawFeed = `
+jest.mock("axios");
+
+describe("Feed service", () => {
+  const rawFeed = `
       <rss version="2.0">
         <channel>
           <title>Pelastustoimen mediapalvelu: ensitiedotteet</title>
@@ -24,7 +26,22 @@ describe("Feed parser", () => {
         </channel>
       </rss>
     `;
-    const events = await feedService.mapFeedToEvents(rawFeed);
+  it("reads feed and returns event objects", async () => {
+    const mockAxios = axios as jest.Mocked<typeof axios>;
+    mockAxios.get.mockResolvedValue({
+      headers: {
+        etag: "2f44c1b882ad71:0",
+      },
+      data: rawFeed,
+    });
+    mockAxios.head.mockResolvedValue({
+      headers: {
+        etag: "2f44c1b882ad71:0",
+      },
+    });
+    const events = await fetchFeedEvents();
+    expect(mockAxios.head).toHaveBeenCalled();
+    expect(mockAxios.get).toHaveBeenCalled();
     expect(events).toEqual([
       {
         type: "rakennuspalo: pieni",
