@@ -10,13 +10,17 @@ export const pollFeed = (
   eventCallback: (event: RescueEvent) => void
 ): cron.ScheduledTask => {
   const task = cron.schedule(config.feed.schedule, async () => {
-    const events = await fetchFeedEvents();
-    for (const event of events) {
-      if (!(await sqlEventService.exists(event))) {
-        logger.info("New event", event);
-        await sqlEventService.add(event);
-        eventCallback(event);
+    try {
+      const events = await fetchFeedEvents();
+      for (const event of events) {
+        if (!(await sqlEventService.exists(event))) {
+          logger.info("New event", event);
+          await sqlEventService.add(event);
+          eventCallback(event);
+        }
       }
+    } catch (err) {
+      logger.error(`Failed to fetch feed: ${err.message}`);
     }
   });
   return task;
