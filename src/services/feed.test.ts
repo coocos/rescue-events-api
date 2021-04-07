@@ -1,5 +1,5 @@
 import axios from "axios";
-import { fetchFeedEvents } from "./feedService";
+import { fetchFeedEvents } from "./feed";
 
 jest.mock("axios");
 

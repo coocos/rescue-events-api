@@ -4,7 +4,7 @@ import hash from "object-hash";
 import Parser from "rss-parser";
 
 import config from "../config";
-import { RescueEvent } from "./eventService";
+import { RescueEvent } from "./events";
 
 const cache = {
   etag: "",

@@ -1,19 +1,19 @@
 import { Request, Response } from "express";
 import logger from "../logger";
-import { sqlEventService } from "../services/sqlEventService";
+import { events } from "../services/events";
 
 export async function listEvents(req: Request, res: Response): Promise<void> {
   try {
-    const events = await sqlEventService.findAll();
+    const allEvents = await events.findAll();
     res.json(
-      events.map(({ type, location, time }) => ({
+      allEvents.map(({ type, location, time }) => ({
         type,
         location,
         time: time.toISOString(),
       }))
     );
-  } catch (e) {
-    logger.error(`Failed to list events: ${e}`);
+  } catch (err) {
+    logger.error(`Failed to list events: ${err.message}`);
     res.status(500).json({
       error: "failed to list events",
     });
