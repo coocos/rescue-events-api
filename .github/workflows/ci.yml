@@ -12,3 +12,31 @@ jobs:
           node-version: '14'
       - run: npm ci
       - run: npm test
+  integration:
+    runs-on: ubuntu-latest
+    container: node:14-alpine
+    services:
+      postgres:
+        image: postgres:13.2-alpine
+        env:
+          POSTGRES_USER: test
+          POSTGRES_DB: test
+          POSTGRES_PASSWORD: test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - run: npm ci
+      - run: npm run integration
+        timeout-minutes: 1
+        env:
+          DB_HOST: postgres
+          DB_USER: test
+          DB_PASSWORD: test
+          DB_NAME: test

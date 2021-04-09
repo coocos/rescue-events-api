@@ -6,7 +6,7 @@
   "scripts": {
     "start": "ts-node-dev --respawn --transpile-only --require dotenv/config src/index.ts",
     "test": "NODE_ENV=test jest --silent --testPathIgnorePatterns integration",
-    "integration": "env $(cat .env) NODE_ENV=test jest --silent --testPathPattern integration",
+    "integration": "NODE_ENV=test jest --silent --testPathPattern integration",
     "migrate": "env $(cat .env) knex migrate:latest",
     "rollback": "env $(cat .env) knex migrate:rollback"
   },
