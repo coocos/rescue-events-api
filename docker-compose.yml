@@ -1,8 +1,7 @@
 version: '3'
 services:
   api:
-    build:
-      context: ./
+    build: .
     restart: always
     environment:
       - DB_HOST=database
@@ -10,10 +9,14 @@ services:
       - DB_PASSWORD
       - DB_NAME
       - FEED_SCHEDULE
+      - NODE_ENV
     ports:
       - 8000:8000
     depends_on:
       - database
+    command: >
+      sh -c "node_modules/.bin/knex migrate:latest &&
+             node_modules/.bin/ts-node --transpile-only src/index.ts"
   database:
     image: postgres:13.2-alpine
     restart: always
