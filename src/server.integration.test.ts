@@ -102,13 +102,11 @@ describe("Server", () => {
             type: "rakennuspalo: pieni",
             location: "Kokkola",
             time: "2021-03-01T15:59:04.000Z",
-            hash: "c7aae8a31f3d31d228aa33368be142663bad9577",
           },
           {
             type: "rakennuspalo: pieni",
             location: "Helsinki",
             time: "2021-03-01T15:40:52.000Z",
-            hash: "169a28a0c1979d7c105490bde4e30ce5b64418a5",
           },
         ]);
         client.close();

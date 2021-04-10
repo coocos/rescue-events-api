@@ -6,7 +6,7 @@ import { events, RescueEvent } from "./services/events";
 import { fetchFeedEvents } from "./services/feed";
 
 export const pollFeed = (
-  eventCallback: (event: RescueEvent) => void
+  eventCallback: (event: Omit<RescueEvent, "hash">) => void
 ): cron.ScheduledTask => {
   const task = cron.schedule(config.feed.schedule, async () => {
     try {
@@ -15,7 +15,11 @@ export const pollFeed = (
         if (!(await events.exists(event))) {
           logger.info("New event", event);
           await events.add(event);
-          eventCallback(event);
+          eventCallback({
+            location: event.location,
+            time: event.time,
+            type: event.type,
+          });
         }
       }
     } catch (err) {
