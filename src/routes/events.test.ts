@@ -7,7 +7,7 @@ jest.mock("../services/events");
 describe("/events", () => {
   it("returns list of events", async () => {
     const mockEvents = events as jest.Mocked<typeof events>;
-    mockEvents.findAll.mockResolvedValue([
+    mockEvents.find.mockResolvedValue([
       {
         type: "rakennuspalo: keskisuuri",
         location: "Tuusula",

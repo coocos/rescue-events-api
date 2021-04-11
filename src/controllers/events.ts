@@ -4,7 +4,7 @@ import { events } from "../services/events";
 
 export async function listEvents(req: Request, res: Response): Promise<void> {
   try {
-    const allEvents = await events.findAll();
+    const allEvents = await events.find();
     res.json(
       allEvents.map(({ type, location, time }) => ({
         type,

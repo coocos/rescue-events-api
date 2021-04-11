@@ -24,18 +24,27 @@ type Event = {
   hash: string;
 };
 
+type QueryFilters = {
+  location?: string;
+};
+
 export const events = {
-  async findAll(): Promise<RescueEvent[]> {
-    const events = await db("events")
-      .join("types", "types.id", "events.type_id")
-      .join("locations", "locations.id", "events.location_id")
-      .select<RescueEvent[]>(
+  async find(filters: QueryFilters = {}): Promise<RescueEvent[]> {
+    let events = db("events")
+      .select(
         "events.time",
         "events.hash",
         "locations.name as location",
         "types.name as type"
-      );
-    return events;
+      )
+      .join("types", "types.id", "events.type_id")
+      .join("locations", "locations.id", "events.location_id");
+    if (filters.location !== undefined) {
+      events = events.where({
+        "locations.name": filters.location,
+      });
+    }
+    return (await events) as RescueEvent[];
   },
   async exists(event: RescueEvent): Promise<boolean> {
     const knownEvent = await db<Event>("events")
