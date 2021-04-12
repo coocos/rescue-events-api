@@ -3,6 +3,10 @@ import * as eventController from "../controllers/events";
 
 const router = express.Router();
 
-router.get("/", eventController.listEvents);
+router.get(
+  "/",
+  eventController.validateListFilters(),
+  eventController.listEvents
+);
 
 export default router;
