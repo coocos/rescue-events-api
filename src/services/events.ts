@@ -26,6 +26,8 @@ type Event = {
 
 type QueryFilters = {
   location?: string;
+  start?: Date;
+  end?: Date;
 };
 
 export const events = {
@@ -43,6 +45,12 @@ export const events = {
       events = events.where({
         "locations.name": filters.location,
       });
+    }
+    if (filters.start !== undefined) {
+      events = events.where("time", ">=", filters.start);
+    }
+    if (filters.end !== undefined) {
+      events = events.where("time", "<=", filters.end);
     }
     return (await events) as RescueEvent[];
   },

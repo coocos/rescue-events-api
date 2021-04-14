@@ -4,7 +4,18 @@ import logger from "../logger";
 import { events } from "../services/events";
 
 export function validateListFilters(): ValidationChain[] {
-  return [query("location").isString().optional()];
+  return [
+    query("location")
+      .isString()
+      .notEmpty()
+      .withMessage("location cannot be empty")
+      .optional(),
+    query(["start", "end"])
+      .isISO8601()
+      .optional()
+      .withMessage("date needs to be formatted in ISO-8601")
+      .toDate(),
+  ];
 }
 
 export async function listEvents(
@@ -14,14 +25,14 @@ export async function listEvents(
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      res.json({
+      res.status(400).json({
         error: errors.array(),
       });
       return;
     }
-    const allEvents = await events.find(req.query);
+    const foundEvents = await events.find(req.query);
     res.json(
-      allEvents.map(({ type, location, time }) => ({
+      foundEvents.map(({ type, location, time }) => ({
         type,
         location,
         time: time.toISOString(),

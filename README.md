@@ -29,13 +29,13 @@ There's essentially a single, simple endpoint which you can use to query the ser
 ]
 ```
 
-You probably shouldn't call this endpoint if you've been running the service for a while, because it will return _all_ events it has persisted from the feed. This could be tens of thousands of events! However, can use filters to narrow down your search. For example, to narrow down to a specific a time range:
+You probably shouldn't call this endpoint if you've been running the service for a while, because it will return _all_ events it has persisted from the feed. This could be tens of thousands of events! However, can use filters to narrow down your search. For example, to narrow down to a specific a time range using ISO-8601:
 
-- `GET /api/v1/events/?start=2020-04-05T00:00:00&end=2020-04-06T00:00:00` will return all events which occurred during 5th of April 2020.
+- `GET /api/v1/events/?start=2020-04-05T00:00:00.000Z&end=2020-04-06T00:00:00.000Z` will return all events which occurred during 5th of April 2020.
 
-Or you could narrow down by event location and a start time:
+Or you could narrow down by using both location and start time:
 
-- `GET /api/v1/events/?start=2020-04-01T00:00:00&location=Helsinki` will return all events which have occurred in Helsinki since 1st of April 2020.
+- `GET /api/v1/events/?start=2020-04-01T00:00:00.000Z&location=Helsinki` will return all events which have occurred in Helsinki since 1st of April 2020.
 
 ## WebSocket API
 
