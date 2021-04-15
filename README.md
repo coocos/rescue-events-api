@@ -43,7 +43,7 @@ The service will also publish any new rescue events found to all currently conne
 
 ```javascript
 const socket = new WebSocket("ws://localhost:8000/websocket");
-socket.onmessage = (data) => console.log(data);
+socket.onmessage = (msg) => console.log(JSON.parse(msg.data));
 ```
 
 The published events look just like the events returned by the REST API:
@@ -67,7 +67,7 @@ npm start
 The service will automatically reload if you make any changes to the code. You can also use docker-compose to start both the service and PostgreSQL using containers:
 
 ```
-docker-compose up -d
+docker-compose up
 ```
 
 ## Configuring the service
@@ -90,10 +90,10 @@ You can run a set of unit tests with:
 npm test
 ```
 
-There is also a set of integration tests which test that the service polls the feed, persists events, broadcasts new events to WebSocket clients, as well as allows REST API users to query for the events. You can run these tests with:
+There is also a set of integration tests which you can run with:
 
 ```
 npm run integration
 ```
 
-Note that you need a PostgreSQL instance running for the integration tests.
+Note that you need a PostgreSQL instance for the integration tests.
