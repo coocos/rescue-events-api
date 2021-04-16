@@ -6,6 +6,7 @@ import WebSocket from "ws";
 
 import config from "./config";
 import db from "./db";
+import { events } from "./services/events";
 import { startServer } from "./server";
 
 function startFeedServer(): Promise<http.Server> {
@@ -47,8 +48,12 @@ describe("Server", () => {
   let server: http.Server;
   let feedServer: http.Server;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     await db.migrate.latest();
+  });
+
+  beforeEach(async () => {
+    await events.clear();
     feedServer = await startFeedServer();
     const { address, port } = feedServer.address() as AddressInfo;
     config.feed.url = `http://${address}:${port}/rss.xml`;
@@ -59,10 +64,10 @@ describe("Server", () => {
   afterEach(async () => {
     server.close();
     feedServer.close();
-    await db.migrate.rollback();
   });
 
   afterAll(async () => {
+    await db.migrate.rollback();
     await db.destroy();
   });
 

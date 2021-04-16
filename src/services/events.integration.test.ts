@@ -2,15 +2,16 @@ import db from "../db";
 import { events } from "./events";
 
 describe("Service", () => {
-  beforeEach(async () => {
+  beforeAll(async () => {
     await db.migrate.latest();
   });
 
-  afterEach(async () => {
-    await db.migrate.rollback();
+  beforeEach(async () => {
+    await events.clear();
   });
 
   afterAll(async () => {
+    await db.migrate.rollback();
     await db.destroy();
   });
 

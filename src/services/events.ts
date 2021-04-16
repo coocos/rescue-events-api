@@ -110,4 +110,9 @@ export const events = {
       logger.error(err);
     }
   },
+  async clear(): Promise<void> {
+    for (const table of ["events", "types", "locations"]) {
+      await db(table).del();
+    }
+  },
 };
