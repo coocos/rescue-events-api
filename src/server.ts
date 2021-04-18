@@ -18,9 +18,7 @@ export function startServer(): http.Server {
   const broadcast = webSocketServer(httpServer);
 
   const feedPoller = pollFeed(broadcast);
-  httpServer.on("close", () => {
-    feedPoller.destroy();
-  });
+  httpServer.on("close", () => feedPoller.destroy());
 
   return httpServer;
 }
